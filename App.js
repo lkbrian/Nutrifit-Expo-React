@@ -11,6 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as ExpoSplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
+import VerificationScreen from "./screens/VerificationScreen";
 
 ExpoSplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -44,7 +46,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="register">
+      <Stack.Navigator initialRouteName="splash">
         <Stack.Screen
           name="splash"
           component={SplashScreen}
@@ -58,6 +60,16 @@ export default function App() {
         <Stack.Screen
           name="register"
           component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="forgot-password"
+          component={ForgotPasswordScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="verification"
+          component={VerificationScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -7,14 +7,16 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import OtpModal from "../components/OtpModal";
 
-// const StyledScrollView = styled(ScrollView);
+const ForgotPasswordScreen = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
 
-export default function LoginScreen({ navigation }) {
   return (
     <LinearGradient
       colors={["rgba(197,228,108,1)", "rgba(79,164,58,1)"]}
@@ -49,8 +51,8 @@ export default function LoginScreen({ navigation }) {
             keyboardShouldPersistTaps="handled"
             className="h-[550px] flex gap-[20px]"
           >
-            <Text className="text-[34px] text-[#161716] font-outfitsemibold text-center my-[25px] mt-16">
-              Sign in
+            <Text className="text-[34px] text-[#161716] font-outfitsemibold text-center my-[15px] mt-16">
+              Forgot password
             </Text>
             <TextInput
               placeholder="email"
@@ -61,34 +63,35 @@ export default function LoginScreen({ navigation }) {
               placeholder="password"
               className="border-[1px] border-[#C5E46C] bg-white rounded-md h-[50px] w-[368px] mx-auto font-outfitregular"
             />
-            <TouchableOpacity
-              onPress={() => navigation.navigate("forgot-password")}
-              className="flex gap-2 w-[368px] mx-auto"
-            >
-              <Text className="inline">
-                Forgot password?
-                <Text className="text-[#205A13] inline  underline">reset</Text>
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="mx-auto w-[368px] h-[60px] bg-[#205A13] rounded-[10px] text-center flex justify-center  mt-8">
-              <Text className="text-white text-center text-[16px] font-outfitregular">
-                Signin
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("register")}
-              className="w-[368px] mx-auto"
-            >
-              <Text className="text-center font-outfitregular">
-                Don't have an account?{" "}
-                <Text className="text-[#205A13] underline font-outfitregular">
-                  Signup
+            <TextInput
+              secureTextEntry={true}
+              placeholder="confirm password"
+              className="border-[1px] border-[#C5E46C] bg-white rounded-md h-[50px] w-[368px] mx-auto font-outfitregular"
+            />
+            <View>
+              <Pressable
+                onPress={() => setModalVisible(true)}
+                className="mx-auto w-[368px] h-[60px] bg-[#205A13] rounded-[10px] text-center flex justify-center  mt-2"
+              >
+                <Text className="text-white text-center text-[16px] font-outfitregular">
+                  Reset
                 </Text>
-              </Text>
-            </TouchableOpacity>
+              </Pressable>
+
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                className="w-[368px] mx-auto mt-2"
+              >
+                <Text className="text-[#205A13] text-center underline font-outfitregular">
+                  Back
+                </Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
+      <OtpModal setModalVisible={setModalVisible} modalVisible={modalVisible} />
     </LinearGradient>
   );
-}
+};
+export default ForgotPasswordScreen;
