@@ -101,7 +101,7 @@ const OtpModal = ({ modalVisible, setModalVisible }) => {
 
           <Text className="font-outfitregular p-2">
             Note: Once you close this modal, the initial code will be rendered
-            useless, and a new one will be generated.
+            useless, and a new one will be generated on the next reopen.
           </Text>
         </View>
       </View>

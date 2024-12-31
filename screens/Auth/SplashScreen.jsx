@@ -24,7 +24,7 @@ const SplashScreen = ({ navigation }) => {
     >
       <View className="flex-1 justify-center items-center gap-2 font-outfitregular">
         <Image
-          source={require("../assets/images/splash_logo.png")}
+          source={require("../../assets/images/splash_logo.png")}
           // className="w-60 h-60"
         />
         {/* </View> */}

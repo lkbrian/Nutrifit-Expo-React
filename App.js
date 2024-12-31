@@ -1,18 +1,21 @@
 import { StatusBar } from "expo-status-bar";
 import { Image, Text, StyleSheet, View, Button, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient"; // Expo's LinearGradient
-import SplashScreen from "./screens/SplashScreen";
+import SplashScreen from "./screens/Auth/SplashScreen";
 import "./global.css";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
+import LoginScreen from "./screens/Auth/LoginScreen";
+import RegisterScreen from "./screens/Auth/RegisterScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ExpoSplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
-import VerificationScreen from "./screens/VerificationScreen";
+import ForgotPasswordScreen from "./screens/Auth/ForgotPasswordScreen";
+import VerificationScreen from "./screens/Auth/VerificationScreen";
+import Dashboard from "./screens/Main/Dashboard";
+import Onboarding from "./screens/Main/Onboarding";
+import Layout from "./_layout";
 
 ExpoSplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -23,6 +26,34 @@ Text.defaultProps.style = { fontFamily: "OutfitRegular" };
 TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.style = { fontFamily: "OutfitRegular" };
 
+const MainStack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
+
+// Auth stack
+function AuthNavigator() {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name="splash" component={SplashScreen} />
+      <AuthStack.Screen name="login" component={LoginScreen} />
+      <AuthStack.Screen name="register" component={RegisterScreen} />
+      <AuthStack.Screen
+        name="forgot-password"
+        component={ForgotPasswordScreen}
+      />
+      <AuthStack.Screen name="verification" component={VerificationScreen} />
+    </AuthStack.Navigator>
+  );
+}
+
+// Main stack
+function MainNavigator() {
+  return (
+    <MainStack.Navigator screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name="home" component={Dashboard} />
+    </MainStack.Navigator>
+  );
+}
 export default function App() {
   const [fontsLoaded, error] = useFonts({
     OutfitLight: require("./assets/fonts/outfit_light.ttf"),
@@ -46,33 +77,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="splash">
-        <Stack.Screen
-          name="splash"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="register"
-          component={RegisterScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="forgot-password"
-          component={ForgotPasswordScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="verification"
-          component={VerificationScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
+      <Layout />
     </NavigationContainer>
   );
 }
