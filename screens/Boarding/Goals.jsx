@@ -12,6 +12,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
 import ProgressBar from "../../components/ProgressBar";
 import axiosInstance from "../../utils/axiosSetup";
+import { RetrieveItem } from "../../utils/storage";
 
 const Goals = ({ navigation }) => {
   const {
@@ -20,21 +21,26 @@ const Goals = ({ navigation }) => {
     reset,
     formState: { errors },
   } = useForm({ mode: "all" });
-  const goals = [
+  const Goals = [
     "Balanced Nutrition",
     "Lose Weight",
     "Gain Weight",
     "Maintainance",
   ];
-  const [active, setActive] = useState("Balanced Nutrition");
+  const [goals, setGoals] = useState("Balanced Nutrition");
   const [isLoading, setIsLoading] = useState(false);
   const onSubmit = async () => {
-    console.log(active);
     setIsLoading(true);
+    const user_id = await RetrieveItem("user_id");
+    const data = { goals, user_id };
+    data.step = "goals";
+    console.log({ data });
 
     try {
-      // const res = await axiosInstance.post()
+      const res = await axiosInstance.post("/user_info", data);
+      console.log(res.data.msg);
     } catch (error) {
+      console.error("Error", error.response?.data?.msg);
     } finally {
       setTimeout(() => {
         setIsLoading(false);
@@ -45,7 +51,7 @@ const Goals = ({ navigation }) => {
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={"#161716"} barStyle={"light-content"} />
-      <View className="">
+      <View className="pt-[20px]">
         <View className="flex flex-row gap-2 pt-4 items-center">
           <Ionicons name="chevron-back-outline" size={30} color="#161716" />
           <ProgressBar value={25} />
@@ -54,13 +60,13 @@ const Goals = ({ navigation }) => {
           What is your main goal?
         </Text>
         <View className="p-4 flex gap-4">
-          {goals.map((goal, index) => (
+          {Goals.map((goal, index) => (
             <Pressable
               key={index}
               value={goal}
-              onPress={() => setActive(goal)}
+              onPress={() => setGoals(goal)}
               className={`h-[55px] rounded-[10px] flex flex-row items-center px-4 w-full border border-[#C5E46C] ${
-                goal === active ? "bg-[#C5E46C]" : "bg-white"
+                goal === goals ? "bg-[#C5E46C]" : "bg-white"
               }`}
             >
               <Text className="text-[16px] font-outfitregular">{goal}</Text>

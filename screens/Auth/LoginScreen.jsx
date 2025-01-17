@@ -17,13 +17,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
 import axiosInstance from "../../utils/axiosSetup";
+import { RetrieveItem, StoreItem } from "../../utils/storage";
 
 // const StyledScrollView = styled(ScrollView);
 
 export default function LoginScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const [validationError, SetValidationError] = useState(null);
+  const [validationError, setValidationError] = useState(null);
   const {
     control,
     handleSubmit,
@@ -37,13 +38,25 @@ export default function LoginScreen({ navigation }) {
     Keyboard.dismiss();
     try {
       const res = await axiosInstance.post("/login", data);
-      console.log("Response", res);
       console.log("Data", res.data);
-      SetValidationError(null);
-      navigation.navigate("home");
+      const logdata = res.data;
+      setValidationError(null);
+      if (logdata.completed && logdata.step === "nutrition") {
+        navigation.navigate("home");
+      } else if (logdata.step === "diet") {
+        navigation.navigate("nutrition");
+      } else if (logdata.step === "details") {
+        navigation.navigate("diet");
+      } else if (logdata.step === "goals") {
+        navigation.navigate("details");
+      } else {
+        navigation.navigate("goals");
+      }
+
+      StoreItem("user_id", res.data.id);
     } catch (error) {
       console.error("Error", error);
-      SetValidationError(error.response?.data?.msg);
+      setValidationError(error.response?.data?.msg);
     } finally {
       setIsLoading(false);
     }
@@ -59,8 +72,8 @@ export default function LoginScreen({ navigation }) {
         <View className="justify-center items-center mt-10">
           <View className="w-40 h-40 bg-white rounded-full overflow-hidden justify-center items-center">
             <Image
-              source={require("../../assets/images/logo.png")}
-              className=" w-60 h-60"
+              source={require("../../assets/images/_logo.png")}
+              style={{ width: 100, height: 100, resizeMode: "contain" }}
             />
           </View>
           <Text className="text-white text-center text-[40px] font-outfitbold mt-4">
@@ -75,7 +88,7 @@ export default function LoginScreen({ navigation }) {
         <KeyboardAvoidingView
           // className="flex-1"
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          className=" w-[100%] bg-[#ECEDEC] rounded-t-[28px] h-[550px] pt-2"
+          className="flex-1 w-[100%] bg-[#ECEDEC] rounded-t-[28px] h-[550px] pt-2"
         >
           <ScrollView
             contentContainerStyle={{

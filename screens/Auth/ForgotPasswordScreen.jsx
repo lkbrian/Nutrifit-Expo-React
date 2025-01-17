@@ -18,10 +18,12 @@ import OtpModal from "../../components/OtpModal";
 import { useForm, Controller } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
 import axiosInstance from "../../utils/axiosSetup";
+import LoadingScreen from "../../components/LoadingScreen";
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
   const [modalData, setModalData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showNpass, setShowNpass] = useState(false);
@@ -35,21 +37,22 @@ const ForgotPasswordScreen = ({ navigation }) => {
   } = useForm({ mode: "all" });
   const onSubmit = async (data) => {
     const { new_password, confirm_password, email } = data;
-    console.log({ email });
+    console.log({ new_password, confirm_password });
     setIsLoading(true);
     try {
-      const res = await axiosInstance.post("/forgot_password", data, {});
+      const res = await axiosInstance.post("/forgot_password", { email });
       setModalVisible(true);
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data.msg);
+      setMessage(res.data.msg);
       reset();
+      setModalData({ new_password, confirm_password });
     } catch (error) {
       setError(error);
-      console.log(
-        error.response?.data?.message ||
-          "Something went wrong. Please try again."
-      );
+      console.log(error.response?.data?.msg);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     }
   };
 
@@ -66,8 +69,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
           <View className="justify-center items-center mt-10">
             <View className="w-40 h-40 bg-white rounded-full overflow-hidden justify-center items-center">
               <Image
-                source={require("../../assets/images/logo.png")}
-                className=" w-60 h-60"
+                source={require("../../assets/images/_logo.png")}
+                style={{ width: 100, height: 100, resizeMode: "contain" }}
               />
             </View>
             <Text className="text-white text-center text-[40px] font-outfitbold mt-4">
@@ -82,7 +85,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
           <KeyboardAvoidingView
             // className="flex-1"
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            className=" w-[100%] h-[550px] bg-[#ECEDEC] rounded-t-[28px]"
+            className=" w-[100%] flex-1 bg-[#ECEDEC] rounded-t-[28px]"
           >
             <ScrollView
               contentContainerStyle={{
@@ -240,7 +243,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
         <OtpModal
           setModalVisible={setModalVisible}
           modalVisible={modalVisible}
+          payload={modalData}
         />
+        {/* <LoadingScreen visible={isLoading} message={message} /> */}
       </LinearGradient>
     </SafeAreaView>
   );

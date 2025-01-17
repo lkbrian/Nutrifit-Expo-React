@@ -9,12 +9,13 @@ import Onboarding from "./screens/Main/Onboarding";
 import Goals from "./screens/Boarding/Goals";
 import Details from "./screens/Boarding/Details";
 import Diet from "./screens/Boarding/Diet";
+import Nutrition from "./screens/Boarding/Nutrition";
 
 const Stack = createNativeStackNavigator();
 
 export default function Layout() {
   return (
-    <Stack.Navigator initialRouteName="details">
+    <Stack.Navigator initialRouteName="home">
       <Stack.Screen
         name="splash"
         component={SplashScreen}
@@ -58,6 +59,11 @@ export default function Layout() {
       <Stack.Screen
         name="diet"
         component={Diet}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="nutrition"
+        component={Nutrition}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

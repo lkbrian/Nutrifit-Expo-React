@@ -45,8 +45,7 @@ export default function RegisterScreen({ navigation }) {
       console.error("Error submitting form:", error);
       Alert.alert(
         "Error",
-        error.response?.data?.message ||
-          "Something went wrong. Please try again."
+        error.response?.data?.msg || "Something went wrong. Please try again."
       );
     } finally {
       setIsLoading(false);
@@ -66,8 +65,8 @@ export default function RegisterScreen({ navigation }) {
           <View className="justify-center items-center mt-10">
             <View className="w-40 h-40 bg-white rounded-full overflow-hidden justify-center items-center">
               <Image
-                source={require("../../assets/images/logo.png")}
-                className="w-60 h-60"
+                source={require("../../assets/images/_logo.png")}
+                style={{ width: 100, height: 100, resizeMode: "contain" }}
               />
             </View>
             <Text className="text-white text-center text-[40px] font-outfitbold mt-4">

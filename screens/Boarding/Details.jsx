@@ -16,6 +16,8 @@ import ProgressBar from "../../components/ProgressBar";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Controller, set, useForm } from "react-hook-form";
 import { Dropdown } from "react-native-element-dropdown";
+import { RetrieveItem } from "../../utils/storage";
+import axiosInstance from "../../utils/axiosSetup";
 
 const data = [
   { label: "Male", value: "Male" },
@@ -51,10 +53,21 @@ const Details = ({ navigation }) => {
     setWeightUnit((prev) => (prev === "kg" ? "lbs" : "kg"));
   };
   const onSubmit = async (data) => {
-    console.log(data);
     setIsLoading(true);
     try {
+      const user_id = await RetrieveItem("user_id");
+      if (!user_id) {
+        console.log("missing id");
+        return;
+      } else {
+        data.step = "details";
+        console.log(data);
+        const res = await axiosInstance.patch(`user_info/${user_id}`, data);
+        console.log(res.data.msg || "sucess");
+        reset();
+      }
     } catch (error) {
+      console.error("Error", error.response?.data?.msg);
     } finally {
       setTimeout(() => {
         setIsLoading(false);
@@ -65,7 +78,7 @@ const Details = ({ navigation }) => {
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={"#161716"} barStyle={"light-content"} />
-      <View className="">
+      <View className="pt-[20px]">
         <View className="flex flex-row gap-2 pt-4 items-center">
           <Ionicons
             name="chevron-back-outline"
@@ -94,7 +107,7 @@ const Details = ({ navigation }) => {
             </Pressable>
             <Controller
               control={control}
-              name="date"
+              name="dob"
               defaultValue={date} // Provide a default value
               render={({ field: { onChange, value } }) => (
                 <>
@@ -120,10 +133,8 @@ const Details = ({ navigation }) => {
               }}
             />
 
-            {errors.date && (
-              <Text className="text-red-500 text-xs">
-                {errors.date.message}
-              </Text>
+            {errors.dob && (
+              <Text className="text-red-500 text-xs">{errors.dob.message}</Text>
             )}
           </View>
           <View>

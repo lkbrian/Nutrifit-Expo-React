@@ -15,6 +15,8 @@ import {
 } from "react-native";
 import ProgressBar from "../../components/ProgressBar";
 import { Dropdown } from "react-native-element-dropdown";
+import { RetrieveItem } from "../../utils/storage";
+import axiosInstance from "../../utils/axiosSetup";
 
 const dietaryPreferences = [
   { label: "Vegeterian", value: "Vegeterian" },
@@ -59,12 +61,35 @@ const Diet = ({ navigation }) => {
     formState: { errors },
   } = useForm({ mode: "all" });
   const onSubmit = async (data) => {
-    console.log(data);
+    setIsLoading(true);
+    try {
+      const user_id = await RetrieveItem("user_id");
+      if (!user_id) {
+        console.log("missing id");
+        return;
+      } else {
+        data.step = "diet";
+        console.log(data);
+        const res = await axiosInstance.patch(`user_info/${user_id}`, data);
+        console.log(res.data.msg || "sucess");
+        navigation.navigate("nutrition");
+        console.log(res);
+        // reset()
+      }
+    } catch (error) {
+      console.error("Error", error.response?.data?.msg);
+      console.log(error);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+    }
   };
+
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={"#161716"} barStyle={"light-content"} />
-      <View className="">
+      <View className="pt-[20px]">
         <View className="flex flex-row gap-2 pt-4 items-center">
           <Ionicons
             name="chevron-back-outline"
@@ -84,7 +109,7 @@ const Diet = ({ navigation }) => {
             </Text>
             <Controller
               control={control}
-              name="dietary_preference"
+              name="dietary_preferences"
               render={({ field: { onChange, value } }) => (
                 <Dropdown
                   style={styles.dropdown}
@@ -115,9 +140,9 @@ const Diet = ({ navigation }) => {
                 required: "Dietary prefernce is requred",
               }}
             />
-            {errors.dietary_preference && (
+            {errors.dietary_preferences && (
               <Text className="text-red-500 text-xs">
-                {errors.dietary_preference.message}
+                {errors.dietary_preferences.message}
               </Text>
             )}
           </View>
