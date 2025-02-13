@@ -40,7 +40,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
     console.log({ new_password, confirm_password });
     setIsLoading(true);
     try {
-      const res = await axiosInstance.post("/forgot_password", { email });
+      //const res = await axiosInstance.post("/forgot_password", { email });
       setModalVisible(true);
       // console.log("Response:", response.data.msg);
       setMessage(res.data.msg);
