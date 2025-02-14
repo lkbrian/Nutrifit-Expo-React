@@ -36,8 +36,8 @@ export default function RegisterScreen({ navigation }) {
     console.log(data);
     setIsLoading(true);
     try {
-      const response = await axiosInstance.post("/create_account", data, {});
-      console.log("Response:", response.data);
+      //const response = await axiosInstance.post("/create_account", data, {});
+      //console.log("Response:", response.data);
       Alert.alert("Success", "Form submitted successfully!");
       reset();
       navigation.navigate("verification");

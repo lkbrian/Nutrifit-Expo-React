@@ -37,23 +37,23 @@ export default function LoginScreen({ navigation }) {
     setIsLoading(true);
     Keyboard.dismiss();
     try {
-      const res = await axiosInstance.post("/login", data);
-      console.log("Data", res.data);
-      const logdata = res.data;
-      setValidationError(null);
-      if (logdata.completed && logdata.step === "nutrition") {
-        navigation.navigate("home");
-      } else if (logdata.step === "diet") {
-        navigation.navigate("nutrition");
-      } else if (logdata.step === "details") {
-        navigation.navigate("diet");
-      } else if (logdata.step === "goals") {
-        navigation.navigate("details");
-      } else {
-        navigation.navigate("goals");
-      }
+      //const res = await axiosInstance.post("/login", data);
+      //console.log("Data", res.data);
+      // const logdata = res.data;
+      // setValidationError(null);
+      // if (logdata.completed && logdata.step === "nutrition") {
+      navigation.navigate("home");
+      // } else if (logdata.step === "diet") {
+      //   navigation.navigate("nutrition");
+      // } else if (logdata.step === "details") {
+      //   navigation.navigate("diet");
+      // } else if (logdata.step === "goals") {
+      //   navigation.navigate("details");
+      // } else {
+      //   navigation.navigate("goals");
+      // }
 
-      StoreItem("user_id", res.data.id);
+      //StoreItem("user_id", res.data.id);
     } catch (error) {
       console.error("Error", error);
       setValidationError(error.response?.data?.msg);
