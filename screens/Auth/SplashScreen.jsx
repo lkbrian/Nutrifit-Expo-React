@@ -8,6 +8,7 @@ import {
   Alert,
   TouchableOpacity,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -41,14 +42,14 @@ const SplashScreen = ({ navigation }) => {
 
         <View className="flex flex-col gap-2">
           <View className="justify-center items-center mt-[30px]">
-            <TouchableOpacity
+            <Pressable
               onPress={() => navigation.navigate("login")}
               className="bg-white py-4 px-6 px-auto shadow-lg text-center rounded-[0.4rem] w-[350px]"
             >
               <Text className=" text-[#016239] m-auto text-center text-[17px] font-outfitmedium">
                 Sign in
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <TouchableOpacity
             onPress={() => navigation.navigate("register")}

@@ -13,11 +13,11 @@ import {
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import ProgressBar from "../../components/ProgressBar";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { Controller, set, useForm } from "react-hook-form";
 import { Dropdown } from "react-native-element-dropdown";
 import { RetrieveItem } from "../../utils/storage";
 import axiosInstance from "../../utils/axiosSetup";
+import DatePicker from "react-native-date-picker";
 
 const data = [
   { label: "Male", value: "Male" },
@@ -112,7 +112,7 @@ const Details = ({ navigation }) => {
               render={({ field: { onChange, value } }) => (
                 <>
                   {showDatePicker && (
-                    <DateTimePicker
+                    <DatePicker
                       value={value || new Date()} // Fallback to `date` if `value` is undefined
                       mode="date"
                       display={Platform.OS === "ios" ? "inline" : "default"}

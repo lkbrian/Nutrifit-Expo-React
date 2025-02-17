@@ -60,7 +60,7 @@ const Goals = ({ navigation }) => {
           What is your main goal?
         </Text>
         <View className="p-4 flex gap-4">
-          {Goals.map((goal, index) => (
+          {/* {Goals.map((goal, index) => (
             <Pressable
               key={index}
               value={goal}
@@ -71,7 +71,7 @@ const Goals = ({ navigation }) => {
             >
               <Text className="text-[16px] font-outfitregular">{goal}</Text>
             </Pressable>
-          ))}
+          ))} */}
           <Pressable
             onPress={handleSubmit(onSubmit)}
             className={`mx-auto w-full h-[40px] flex flex-row items-center justify-center gap-4 ${
